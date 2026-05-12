@@ -1,0 +1,34 @@
+amends "package://github.com/jdx/hk/releases/download/v1.44.3/hk@1.44.3#/Config.pkl"
+import "package://github.com/jdx/hk/releases/download/v1.44.3/hk@1.44.3#/Builtins.pkl"
+
+local linters = new Mapping<String, Step> {
+    ["terraform-validate"] {
+        glob = "**/*.tf"
+        check = "terraform validate"
+    }
+    ["terraform-fmt"] {
+        glob = "**/*.{tf,tfvars,tftest.hcl}"
+        check = "mise run tff -check {{files}}"
+        fix = "mise run tff {{files}}"
+    }
+    ["tflint"] {
+        glob = "**/*.tf"
+        check = "mise run tfl"
+        fix = "mise run tfl --fix"
+    }
+}
+
+hooks {
+    ["pre-commit"] {
+        fix = true
+        stash = "git"
+        steps = linters
+    }
+    ["fix"] {
+        fix = true
+        steps = linters
+    }
+    ["check"] {
+        steps = linters
+    }
+}

@@ -4,11 +4,11 @@ resource "random_password" "password" {
   override_special = "!#$%&*()-_=+[]{}<>:?"
 }
 
-resource "supabase_project" "production" {
-  organization_id   = var.organization_id
-  name              = var.project_name
-  region            = var.region
-  instance_size     = var.instance_size
+resource "supabase_project" "project" {
+  organization_id = var.organization_id
+  name            = var.project_name
+  region          = var.region
+  # instance_size     = var.instance_size
   database_password = random_password.password.result
 
 }

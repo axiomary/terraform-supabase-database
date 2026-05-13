@@ -13,8 +13,3 @@ variable "region" {
   description = "The AWS region to deploy the Supabase project in."
 }
 
-variable "instance_size" {
-  type        = string
-  description = "The size of the supabase database"
-  default     = "micro"
-}

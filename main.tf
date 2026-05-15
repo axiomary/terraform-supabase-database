@@ -25,7 +25,7 @@ resource "aws_secretsmanager_secret_version" "db_password_val" {
 
 resource "supabase_apikey" "api_key" {
   project_ref = supabase_project.project.id
-  name        = "${var.project_name}-key"
+  name        = replace(lower("${var.project_name}_key"), "-", "_")
 }
 
 resource "aws_secretsmanager_secret" "db_api_key" {

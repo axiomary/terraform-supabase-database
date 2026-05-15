@@ -28,6 +28,16 @@ resource "supabase_apikey" "api_key" {
   name        = "${var.project_name}-key"
 }
 
+resource "aws_secretsmanager_secret" "db_api_key" {
+  name        = "${var.project_name}-database-api_key"
+  description = "API Key for Supabase project: ${var.project_name}"
+}
+
+resource "aws_secretsmanager_secret_version" "api_key_val" {
+  secret_id     = aws_secretsmanager_secret.db_password.id
+  secret_string = supabase_apikey.api_key.api_key
+}
+
 resource "supabase_settings" "production" {
   count = var.settings_config != null ? 1 : 0
 
